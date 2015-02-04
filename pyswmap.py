@@ -170,7 +170,7 @@ if __name__ == "__main__":
     print("------------------------------------------------")
     print("Output to follow will include the full range of ports assigned")
     print("to calculated PSID.")
-    print("Note: This can result in a really long list up to 2^8")
+    print("Note: This can result in a really long list up to 2^16")
     raw_input = vars(__builtins__).get('raw_input',input)
     raw_input("Press the ENTER/RETURN key to continue")
     print("\n")
