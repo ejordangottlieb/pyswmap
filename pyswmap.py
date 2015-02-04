@@ -1,21 +1,8 @@
 #!/usr/bin/python3
 
-###
- # Copyright (c) 2010 E Jordan Gottlieb <ejordangottlieb@gmail.com>;
- #
- # Permission to use, copy, modify, and distribute this software for any
- # purpose with or without fee is hereby granted, provided that the above
- # copyright notice and this permission notice appear in all copies.
- #
- # THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- # WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- # MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- # ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- # WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- #
-###
+# There is still a great deal of work required on this module.  Please
+# use with caution.
+# -Jordan 
 
 import sys
 from ipaddress import (
@@ -134,11 +121,11 @@ if __name__ == "__main__":
     # A quick example showing current module capabilities:
     # The next four lines are used to supply the BMR
     # The MAP IPv4 and IPv6 rule prefixes
-    m = MapCalc("fd80::/56","192.0.0.0/31")
+    m = MapCalc("fd80::/48","24.50.100.0/24")
     # Set the PSID offset utilized in the forthcoming calculations
     m.psidoffset = 6
     # Supply ratio instead of EA length.  Either will work
-    m.ratio = 16
+    m.ratio = 64
 
     # Ratio was given so calculate EA length.  Also calc PSID and Port Bits
     m.calc_ea()
@@ -149,14 +136,14 @@ if __name__ == "__main__":
 
     # Supply arbitrary layer-4 port that is valid given PSID Offset used
     # to calculate the PSID.
-    portvalue = 2000
+    portvalue = 1024
     m.gen_psid(portvalue)
 
     # Supply an IPv4 address from IPv4 rule prefix and use it and the 
     # PSID calculated in the previous statement to generate the MAP CE
     # address and parent PD.  We must first feed it to the ipv4_index()
     # method in order to get the integer index value for the IPv4 address.
-    sharedv4 = "192.0.0.1"
+    sharedv4 = "24.50.100.100"
     m.gen_mapaddr(m.ipv4_index(sharedv4))
 
     # Print out some of the pertinent information
