@@ -54,7 +54,6 @@ class MapCalc(object):
         if 'ealen' not in bmr:
             self.ealen = False
         else:
-            print("EA length was passed")
             self.ealen = bmr['ealen']
             self.ratio = self._calc_ratio(bmr['ealen'])
 
@@ -64,7 +63,6 @@ class MapCalc(object):
             if not (self.ratio):
                 self.ratio = False
         else:
-            print("Sharing ratio was passed")
             if (self.ealen):
                 # Check to see if supplied EA length contradicts supplied ratio
                 if ( bmr['ratio'] != self.ratio ):
@@ -75,7 +73,6 @@ class MapCalc(object):
                                                                   sharingratio)
                          )
                     sys.exit(1)
-                print("Sharing ratio calculated properly")
             else:
                 self.ratio = bmr['ratio']
                 self.ealen = self._calc_ea(bmr['ratio'])
