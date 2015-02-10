@@ -31,8 +31,8 @@ class MapCalc(object):
 
         # Validate that a proper PSID Offset has been set
         if 'psidoffset' not in bmr:
-            print("The PSID offset has not been set")
-            sys.exit(1)
+            # Set Default PSID Offset of 6 if it is not set 
+            self.psidoffset = 6
         else:
             self.psidoffset = self._psid_offset(bmr['psidoffset'])
 
@@ -149,6 +149,8 @@ class MapCalc(object):
             sys.exit(1)
         self.psid = (portnum & ((2**self.psidbits - 1) << self.portbits)) 
         self.psid = self.psid >> self.portbits
+
+        self.port_list = self._port_list()
         return self.psid
 
     def port_ranges(self):
@@ -158,7 +160,7 @@ class MapCalc(object):
         if self.psidoffset == 0: return 0  
         return 2**(16 - self.psidoffset)
 
-    def port_list(self):
+    def _port_list(self):
         startrange = self.psid * (2**self.portbits) + self.start_port()
         increment = (2**self.psidbits) * (2**self.portbits)
         portlist = [ ]
@@ -169,7 +171,6 @@ class MapCalc(object):
             startrange += increment
             for port in range(startrange,startrange + 2**self.portbits):
                 portlist.append(port)
-        self.portlist = portlist
         return portlist
 
     def ipv4_index(self,ipv4addr):
@@ -184,18 +185,19 @@ class MapCalc(object):
                   ip_network(self.rulev4,strict=False).network_address))
             sys.exit(1)
 
-    def gen_mapaddr(self,ipv4index):
+    def gen_mapaddr(self,ipv4addr,psid):
+        ipv4index = self.ipv4_index(ipv4addr)
         addroffset = 128 - (self.rulev6mask + ( self.ealen - self.psidbits))
         psidshift = 128 - ( self.rulev6mask + self.ealen )
         mapaddr = IPv6Network(self.rulev6,strict=False).network_address
         mapaddr = int(mapaddr) | ( ipv4index << addroffset )
-        mapaddr = mapaddr | ( self.psid << psidshift)
+        mapaddr = mapaddr | ( psid << psidshift)
         self.pd = "{}/{}".format(
                                    IPv6Address(mapaddr),
                                    self.rulev6mask + self.ealen
                                 )
         mapce = mapaddr | ( int(self.ipv4addr) << 16 )
-        mapce = mapce | self.psid
+        mapce = mapce | psid
         self.mapce = "{}".format(IPv6Address(mapce))
 
 if __name__ == "__main__":
@@ -204,6 +206,7 @@ if __name__ == "__main__":
     # 1.  The IPv6 rule prefix: rulev6      (a string) 
     # 2.  The IPv4 rule prefix: rulev4      (a string)
     # 3.  The PSID Offset:      psidoffset  (an integer)
+    #     Note: In the absence of this value a default of 6 will be used 
     #
     # One of the two following values:
     # 4a. The Sharing Ratio:    ratio       (an integer)
@@ -212,22 +215,38 @@ if __name__ == "__main__":
     # 
     m = MapCalc( rulev6='fd80::/48',
                  rulev4='24.50.100.0/24',
-                 psidoffset=6,
+                 #psidoffset=6,
                  ratio=64,
                  #ealen=14,
                )
 
-    # Supply arbitrary layer-4 port that is valid given PSID Offset used
-    # to calculate the PSID.  PSID is stored in m.psid
+    # Supply arbitrary layer-4 port that is valid given PSID Offset. Resulting
+    # in the calculation of the following:
+    #                  m.psid:      The port-set ID which defines the
+    #                               algorithmically assigned ports unique to
+    #                               a particular MAP CE.
+    #
+    #                  m.port_list: The full list of ports assigned by a 
+    #                               particular PSID.  This attribute is
+    #                               a Python list.
     portvalue = 40000
     m.gen_psid(portvalue)
 
-    # Supply an IPv4 address from IPv4 rule prefix and use it and the 
-    # PSID calculated in the previous statement to generate the MAP CE
-    # address and parent PD.  We must first feed it to the ipv4_index()
-    # method in order to get the integer index value for the IPv4 address.
-    sharedv4 = "24.50.100.100"
-    m.gen_mapaddr(m.ipv4_index(sharedv4))
+    # Supply an IPv4 address from IPv4 rule prefix and PSID and 
+    # use them to calculate:
+    #                  m.pd:        The end-user IPv6 prefix. Typically,
+    #                               but not exclusively DHCPv6 PD.  Can
+    #                               also be assigned via SLAAC or configured
+    #                               manually.  
+    #                      
+    #                  m.mapce:     The MAP IPv6 address.  This address
+    #                               is used to reach the MAP functions
+    #                               of a provisioned/configured MAP CE.
+    #                                  
+    #                               Detailed definitions are available
+    #                               in draft-ietf-softwire-map.
+    sharedv4 = '24.50.100.100'
+    m.gen_mapaddr(sharedv4,m.psid)
 
     # Print out some of the pertinent user supplied and calculated values
     print("\n\n")
@@ -257,4 +276,4 @@ if __name__ == "__main__":
     raw_input = vars(__builtins__).get('raw_input',input)
     raw_input("Press the ENTER/RETURN key to continue")
     print("\n")
-    print(m.port_list())
+    print(m.port_list)
