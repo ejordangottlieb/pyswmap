@@ -14,13 +14,12 @@ with the following values:
 2.  The IPv4 rule prefix: rulev4      (a string)
 3.  The PSID Offset:      psidoffset  (an integer)
     Note: In the absence of this value a default of 6 will be used 
- 
-One of the two following values (both can be supplied if the resulting
+4.  One of the two following values (both can be supplied if the resulting
 calculations is equivalent):
 
-4. The Sharing Ratio:    ratio       (an integer)
+- The Sharing Ratio:    ratio       (an integer)
 <p>or</p>
-4. The EA Length:        ealen       (an integer)
+- The EA Length:        ealen       (an integer)
  
 This will result in the both calculated and validated class variables:
 - m.rulev4: The IPv4 rule prefix used by a particular mapping rule.
@@ -62,17 +61,17 @@ m.gen_psid(portvalue)
 
 Supply an IPv4 address from IPv4 rule prefix and PSID to gen_mapaddr
 method and use them to calculate the following values:
-                 m.pd:         The end-user IPv6 prefix. Typically,
-                               but not exclusively DHCPv6 PD.  Can
-                               also be assigned via SLAAC or configured
-                               manually.  
-                     
-                 m.mapce:      The MAP IPv6 address.  This address
-                               is used to reach the MAP functions
-                               of a provisioned/configured MAP CE.
+
+- m.pd: The end-user IPv6 prefix. Typically,
+but not exclusively DHCPv6 PD.  Can
+also be assigned via SLAAC or configured manually.
+- m.mapce: The MAP IPv6 address.  This address
+is used to reach the MAP functions
+of a provisioned/configured MAP CE.
                                  
-                               Detailed definitions are available
-                               in draft-ietf-softwire-map.
+Detailed definitions for all the variables discussed in this README
+are available in https://tools.ietf.org/html/draft-ietf-softwire-map.
+
 ```python
 sharedv4 = '24.50.100.100'
 m.gen_mapaddr(sharedv4,m.psid)
