@@ -50,7 +50,7 @@ This will result in the both calculated and validated class variables:
                                is defined as the "k bits" in the IETF MAP
                                specification.
  
-'''
+'''python
 m = pyswmap.MapCalc( rulev6='fd80::/48',
                      rulev4='24.50.100.0/24',
                      #psidoffset=6,
@@ -59,7 +59,7 @@ m = pyswmap.MapCalc( rulev6='fd80::/48',
                    )
 '''
 
- # Supply arbitrary layer-4 port that is valid given PSID Offset to 
+Supply arbitrary layer-4 port that is valid given PSID Offset to 
 gen_psid method.  This will calculate the following values:
                  m.psid:       The port-set ID which defines the
                                algorithmically assigned ports unique to
@@ -67,7 +67,7 @@ gen_psid method.  This will calculate the following values:
                  m.port_list:  The full list of ports assigned by a 
                                particular PSID.  This attribute is
                                a Python list.
-'''
+'''python
 portvalue = 40000
 m.gen_psid(portvalue)
 '''
@@ -85,13 +85,13 @@ method and use them to calculate the following values:
                                  
                                Detailed definitions are available
                                in draft-ietf-softwire-map.
-'''
+'''python
 sharedv4 = '24.50.100.100'
 m.gen_mapaddr(sharedv4,m.psid)
 '''
 
 Print out some of the pertinent user supplied and calculated values
-'''
+'''python
 print("\n\n")
 print("################################################")
 print("BMR:")
@@ -123,7 +123,8 @@ print("\n")
 
 Print out list of ports for session PSID
 
-'''print(m.port_list)'''
+'''python
+print(m.port_list)
 
  
 ACKNOWLEDGEMENTS
