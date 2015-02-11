@@ -21,34 +21,19 @@ One of the two following values:
 4b. The EA Length:        ealen       (an integer)
  
 This will result in the both calculated and validated class variables:
-                 m.rulev4:     The IPv4 rule prefix used by a particular
-                               mapping rule.
- 
-                 m.rulev6:     The IPv6 rule prefix used by a particular
-                               mapping rule.
- 
-                 m.rulev4mask: The number of bits in the IPv4 rule subnet
-                               mask.
- 
-                 m.rulev6mask: The number of bits in the IPv6 rule subnet
-                               mask.
- 
-                 m.ealen:      The number of Embedded Address (EA) bits.
- 
-                 m.ratio:      The sharing ratio of # of users per IPv4
-                               address.  This is 2 to the power of bits
-                               in the PSID field.
- 
-                 m.psidoffset: The PSID Offset value.  Defined as the
-                               "A" field in the IETF MAP specification.
- 
-                 m.portbits:   The number of contiguous ports as defined
-                               by the "m bits" in the IETF MAP 
-                               specification.
- 
-                 m.psidbits:   The length in bits of the PSID field.  It
-                               is defined as the "k bits" in the IETF MAP
-                               specification.
+- m.rulev4: The IPv4 rule prefix used by a particular mapping rule.
+- m.rulev6: The IPv6 rule prefix used by a particular mapping rule.
+- m.rulev4mask: The number of bits in the IPv4 rule subnet mask.
+- m.rulev6mask: The number of bits in the IPv6 rule subnet mask.
+- m.ealen: The number of Embedded Address (EA) bits.
+- m.ratio: The sharing ratio of # of users per IPv4
+address.  This is 2 to the power of bits in the PSID field.
+- m.psidoffset: The PSID Offset value.  Defined as the
+"A" field in the IETF MAP specification.
+- m.portbits: The number of contiguous ports as defined
+by the "m bits" in the IETF MAP specification.
+- m.psidbits: The length in bits of the PSID field.  It
+is defined as the "k bits" in the IETF MAP specification.
  
 ```python
 m = pyswmap.MapCalc( rulev6='fd80::/48',
