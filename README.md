@@ -17,6 +17,7 @@ with the following values:
  
 One of the two following values (both can be supplied if the resulting
 calculations is equivalent):
+
 4. The Sharing Ratio:    ratio       (an integer)
 <p>or</p>
 4. The EA Length:        ealen       (an integer)
