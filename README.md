@@ -15,10 +15,11 @@ with the following values:
 3.  The PSID Offset:      psidoffset  (an integer)
     Note: In the absence of this value a default of 6 will be used 
  
-One of the two following values:
-4a. The Sharing Ratio:    ratio       (an integer)
-                   or
-4b. The EA Length:        ealen       (an integer)
+One of the two following values (both can be supplied if the resulting
+calculations is equivalent):
+4. The Sharing Ratio:    ratio       (an integer)
+<p>or</p>
+4. The EA Length:        ealen       (an integer)
  
 This will result in the both calculated and validated class variables:
 - m.rulev4: The IPv4 rule prefix used by a particular mapping rule.
@@ -46,12 +47,13 @@ m = pyswmap.MapCalc( rulev6='fd80::/48',
 
 Supply arbitrary layer-4 port that is valid given PSID Offset to 
 gen_psid method.  This will calculate the following values:
-                 m.psid:       The port-set ID which defines the
-                               algorithmically assigned ports unique to
-                               a particular MAP CE.
-                 m.port_list:  The full list of ports assigned by a 
-                               particular PSID.  This attribute is
-                               a Python list.
+- m.psid: The port-set ID which defines the
+algorithmically assigned ports unique to
+a particular MAP CE.
+- m.port_list:  The full list of ports assigned by a 
+particular PSID.  This attribute is
+a Python list.
+
 ```python
 portvalue = 40000
 m.gen_psid(portvalue)
