@@ -69,15 +69,15 @@ also be assigned via SLAAC or configured manually.
 is used to reach the MAP functions
 of a provisioned/configured MAP CE.
                                  
-Detailed definitions for all the variables discussed in this README
-are available in https://tools.ietf.org/html/draft-ietf-softwire-map.
-
 ```python
 sharedv4 = '24.50.100.100'
 m.gen_mapaddr(sharedv4,m.psid)
 ```
 
-Print out some of the pertinent user supplied and calculated values
+Detailed definitions for all the variables discussed in this README
+are available in https://tools.ietf.org/html/draft-ietf-softwire-map.
+
+Print out some of the pertinent user supplied and calculated values:
 ```python
 print("\n\n")
 print("################################################")
