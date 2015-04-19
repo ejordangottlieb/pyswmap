@@ -149,9 +149,11 @@ class MapCalc(object):
             sys.exit(1)
         self.psid = (portnum & ((2**self.psidbits - 1) << self.portbits)) 
         self.psid = self.psid >> self.portbits
-
-        self.port_list = self._port_list()
         return self.psid
+
+    def port_list(self):
+        # Need to check that valid PSID value exists
+        return self._port_list()
 
     def port_ranges(self):
         return 2**self.psidoffset - 1
@@ -309,4 +311,4 @@ if __name__ == "__main__":
     raw_input("Press the ENTER/RETURN key to continue")
     print("\n")
     # Print out list of ports for session PSID
-    print(m.port_list)
+    print(m.port_list())
