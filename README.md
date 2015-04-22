@@ -50,9 +50,6 @@ gen_psid method.  This will calculate the following values:
 - m.psid: The port-set ID which defines the
 algorithmically assigned ports unique to
 a particular MAP CE.
-- m.port_list:  The full list of ports assigned by a 
-particular PSID.  This attribute is
-a Python list.
 
 ```python
 portvalue = 40000
