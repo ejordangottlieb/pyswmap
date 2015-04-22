@@ -108,7 +108,7 @@ print("\n")
 Print out list of ports for session PSID
 
 ```python
-print(m.port_list)
+print(m.port_list())
 ```
 
  
