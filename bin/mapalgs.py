@@ -259,10 +259,6 @@ if __name__ == "__main__":
     #                  m.psid:       The port-set ID which defines the
     #                                algorithmically assigned ports unique to
     #                                a particular MAP CE.
-    #
-    #                  m.port_list:  The full list of ports assigned by a 
-    #                                particular PSID.  This attribute is
-    #                                a Python list.
     portvalue = 40000
     m.gen_psid(portvalue)
 
