@@ -210,7 +210,17 @@ class DmrCalc(object):
         self.dmrprefix = self._check_dmr_prefix(dmr)
 
     def embed_6052addr(self,ipv4addr):
-        self.ipv4addr = ipv4addr
+
+        try:
+            ipv4addrint = int(ip_address(ipv4addr))
+        except ValueError:
+            print("Invalid IPv4 address {}".format(ipv4addr))
+            sys.exit(1)
+
+        if ( self.dmrprefix.prefixlen == 64 ):
+            ipv6int = ipv4addrint << 24
+            ipv6int += int(self.dmrprefix.network_address)
+            return IPv6Address(ipv6int)
 
     def _check_dmr_prefix(self,dmrprefix):
         try:
@@ -226,7 +236,7 @@ class DmrCalc(object):
             print("Invalid prefix mask /{}".format(self.dmrmask))
             sys.exit(1)
 
-        return dmrprefix
+        return IPv6Network(dmrprefix)
 
 if __name__ == "__main__":
     m = DmrCalc('fd80::/48')
