@@ -95,6 +95,8 @@ class MapCalc(object):
             print("Invalid IPv4 prefix {}".format(rulev4))
             sys.exit(1)
 
+        self.rulev4object = ip_network(rulev4)
+
         return rulev4
 
     def _ipv6_rule(self,rulev6):
