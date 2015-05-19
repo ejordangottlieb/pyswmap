@@ -6,7 +6,7 @@ import sys
 # This script prints out the PSID for any given port and BMR. 
 
 # Syntax is as follows:
-#  ./port2psid.py 
+#  ./port2psid.py [port number]
 
 # Define MAP domain characteristics.  The values may be changed to suite
 # a alternate MAP domain configurations.
