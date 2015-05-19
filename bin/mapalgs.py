@@ -131,6 +131,8 @@ class MapCalc(object):
 
     def _calc_ea(self,ratio):
         if ratio not in ( self._psid_range(16) ):
+            print("Invalid ratio {}".format(ratio))
+            print("Ratio between 2 to the power of 0 thru 16")
             sys.exit(1)
 
         if ( 1 == ratio):
@@ -141,7 +143,31 @@ class MapCalc(object):
         return ealen
 
     def _calc_ratio(self,ealen):
+        maskbits = 32 - self.rulev4mask
+        if ( ealen < maskbits ):
+            print("EA of {} incompatible with rule IPv4 prefix {}".format(
+              ealen,
+              self.rulev4,
+              )
+            )
+            print("EA length must be at least {} bits".format(
+              maskbits,
+              )
+            )
+            sys.exit(1)
+
         self.psidbits = ealen - ( 32 - self.rulev4mask )
+        if ( self.psidbits > 16):
+            print("EA length of {} is too large".format(
+              ealen,
+              )
+            )
+            print("EA should not exceed {} for rule IPv4 prefix {}".format(
+              maskbits + 16,
+              self.rulev4,
+              )
+            )
+            sys.exit(1)
         ratio = 2**self.psidbits
         return ratio
 
