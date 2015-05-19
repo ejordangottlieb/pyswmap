@@ -3,12 +3,10 @@
 from pyswmap import MapCalc
 import sys
 
-# This prints out a list of all possible MAP end-user IPv6 prefixes, 
-# applicable MAP IPv6 addresses, and PSIDs for a particular domain.
-# PSID will always equal 0 for a sharing ratio of 1:1.
+# This script prints out the PSID for any given port and BMR. 
 
 # Syntax is as follows:
-#  ./listmapaddresses.py 
+#  ./port2psid.py 
 
 # Define MAP domain characteristics.  The values may be changed to suite
 # a alternate MAP domain configurations.
@@ -19,8 +17,8 @@ m = MapCalc( rulev6='fd80::/48',
              ratio=64,
              #ealen=30,
                    )
-# The attribute rulev4object is the object returned for a particular
-# instance of the ip_address class from module Python ipaddress.
+# Port value is provided as a command line variable.  it is converted to
+# an integer before being passed to the gen_psid method.
 
 print(m.gen_psid(int(sys.argv[1])))
 
