@@ -23,6 +23,18 @@ calculations is equivalent):
 <p>or</p>
 - The EA Length:        ealen       (an integer)
  
+The code following code snippet demonstrates the creation of a new MapCalc
+object.  The optional attributes have been included in this example but have been commented out.  The psidoffset reflects the default value of 6 while the ealen has been set to reflect the caclulated value given a ratio of 64.
+ 
+```python
+m = pyswmap.MapCalc( rulev6='fd80::/48',
+                     rulev4='24.50.100.0/24',
+                     #psidoffset=6,
+                     ratio=64,
+                     #ealen=14,
+                   )
+```
+
 This will result in the both calculated and validated class variables:
 - m.rulev4: The IPv4 rule prefix used by a particular mapping rule.
 - m.rulev6: The IPv6 rule prefix used by a particular mapping rule.
@@ -37,16 +49,10 @@ address.  This is 2 to the power of bits in the PSID field.
 by the "m bits" in the IETF MAP specification.
 - m.psidbits: The length in bits of the PSID field.  It
 is defined as the "k bits" in the IETF MAP specification.
- 
-```python
-m = pyswmap.MapCalc( rulev6='fd80::/48',
-                     rulev4='24.50.100.0/24',
-                     #psidoffset=6,
-                     ratio=64,
-                     #ealen=14,
-                   )
-```
 
+### Calculating Values Based on BMR  ###
+
+#### Given a Layer-4 Port Return the PSID Which Contains it ####
 Supply arbitrary layer-4 port that is valid given PSID Offset to 
 gen_psid method.  This will calculate the following values:
 - m.psid: The port-set ID which defines the
@@ -55,9 +61,10 @@ a particular MAP CE.
 
 ```python
 portvalue = 40000
-m.gen_psid(portvalue)
+psid = m.gen_psid(portvalue)
 ```
 
+#### Determine the Originating IPv6 End-User Prefix and MAP Address ####
 Supply an IPv4 address from IPv4 rule prefix and PSID to gen_mapaddr
 method and use them to calculate the following values:
 
@@ -76,41 +83,12 @@ m.gen_mapaddr(sharedv4,m.psid)
 Detailed definitions for all the variables discussed in this README
 are available in https://tools.ietf.org/html/draft-ietf-softwire-map.
 
-Print out some of the pertinent user supplied and calculated values:
-```python
-print("\n\n")
-print("################################################")
-print("BMR:")
-print("    Rule IPv6 Prefix: {}".format(m.rulev6))
-print("    Rule IPv4 Prefix: {}".format(m.rulev4))
-print("    PSID Offset:      {}".format(m.psidoffset))
-print("    Sharing Ratio:    {} to 1".format(m.ratio))
-print("    EA Length:        {}".format(m.ealen))
-print("Shared IPv4 and Port Session State:")
-print("    Shared IPv4:      {}".format(sharedv4))
-print("    Port:             {}".format(portvalue))
-print("Other Calculated Values:")
-print("    Port Bits:        {}".format(m.portbits))
-print("    Ranges Allocated: {}".format(2**m.psidoffset - 1))
-print("    PSID Bits:        {}".format(m.psidbits))
-print("################################################")
-print("------------------------------------------------")
-print("PSID: {}".format(m.psid))
-print("PD for this client is: {}".format(m.pd))
-print("MAP CE Address is: {}".format(m.mapce))
-print("------------------------------------------------")
-print("Output to follow will include the full range of ports assigned")
-print("to calculated PSID.")
-print("Note: This can result in a really long list up to 2^16")
-raw_input = vars(__builtins__).get('raw_input',input)
-raw_input("Press the ENTER/RETURN key to continue")
-print("\n")
-```
-
-Print out list of ports for session PSID
+#### Obtain the List of Ports Assigned to a Particular PSID ####
+This method will return a Python list with a complete list of ports for the instance's psid attribute.
 
 ```python
-print(m.port_list())
+m.psid = 4                       # Set the PSID value
+psidlist = m.port_list()         # Obtain the set of ports for the PSID
 ```
 
  
