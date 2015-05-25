@@ -6,8 +6,7 @@ This is a IETF Softwires Working Group MAP (MAP-E and MAP-T) Python 3 module.  I
 - MapCalc: This class provides a set of medthods and attributes derived from the definition of a Base Mapping Rule(BMR).
 - DmrCalc: This class provides a set of methods and attributes in support of a MAP-T Defualt Mapping Rule (DMR)
 
-Using the MapCalc Class
-=======================
+## Using the MapCalc Class ##
 
 ### Initial Steps ###
 We create a new instance of class MapCalc and supply the BMR
