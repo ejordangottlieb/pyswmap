@@ -3,8 +3,8 @@ pyswmap
 
 This is a IETF Softwires Working Group MAP (MAP-E and MAP-T) Python 3 module.  It currently contains two classes:
 
--MapCalc: This class provides a set of medthods and attributes derived from the definition of a Base Mapping Rule(BMR).
--DmrCalc: This class provides a set of methods and attributes in support of a MAP-T Defualt Mapping Rule (DMR)
+- MapCalc: This class provides a set of medthods and attributes derived from the definition of a Base Mapping Rule(BMR).
+- DmrCalc: This class provides a set of methods and attributes in support of a MAP-T Defualt Mapping Rule (DMR)
 
 Using the MapCalc Class
 =======================
