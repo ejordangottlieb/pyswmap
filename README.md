@@ -1,12 +1,14 @@
 pyswmap
 =======
 
-This is a IETF Softwires Working Group MAP (MAP-E and MAP-T) Python 3 module.  It currently accepts BMR entry in using either or both "Sharing Ratio" and "EA length."  It can also calculate the PSID by BMR and session IPv4 port.  Session end-user IPv6 PD and MAP CE address can be calculated by supplied BMR, IPv4 session port, and IPv4 session address.
+This is a IETF Softwires Working Group MAP (MAP-E and MAP-T) Python 3 module.  It currently contains two classes:
 
-Usage and Example
-=================
+-MapCalc: This class provides a set of medthods and attributes derived from the definition of a Base Mapping Rule(BMR).
+-DmrCalc: This class provides a set of methods and attributes in support of a MAP-T Defualt Mapping Rule (DMR)
 
-A quick example showing current module capabilities:
+Using the MapCalc Class
+=======================
+
 We create a new instance of class MapCalc and supply the BMR
 with the following values:
 
