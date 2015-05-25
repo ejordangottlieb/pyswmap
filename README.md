@@ -98,9 +98,9 @@ psidlist = m.port_list()         # Obtain the set of ports for the PSID
 Detailed definitions for all the variables discussed in this README
 are available in https://tools.ietf.org/html/draft-ietf-softwire-map.
 
-## Using the MapCalc Class ##
+## Using the DmrCalc Class ##
 
-### Initial Steps ###
+### Basic Example ###
 We create a new instance of class DmrCalc and supply the DMR
 with the BR prefix:
 
