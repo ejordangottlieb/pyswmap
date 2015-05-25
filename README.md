@@ -9,7 +9,7 @@ This is a IETF Softwires Working Group MAP (MAP-E and MAP-T) Python 3 module.  I
 Using the MapCalc Class
 =======================
 
-## Initial Steps ##
+### Initial Steps ###
 We create a new instance of class MapCalc and supply the BMR
 with the following values:
 
