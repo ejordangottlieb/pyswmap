@@ -4,7 +4,7 @@ pyswmap
 This is a IETF Softwires Working Group MAP (MAP-E and MAP-T) Python 3 module.  It currently contains two classes:
 
 - MapCalc: This class provides a set of medthods and attributes derived from the definition of a Base Mapping Rule(BMR).
-- DmrCalc: This class provides a set of methods and attributes in support of a MAP-T Defualt Mapping Rule (DMR)
+- DmrCalc: This class provides a set of methods and attributes in support of a MAP-T Defualt Mapping Rule (DMR). 
 
 ## Using the MapCalc Class ##
 
@@ -27,6 +27,8 @@ The code following code snippet demonstrates the creation of a new MapCalc
 object.  The optional attributes have been included in this example but have been commented out.  The psidoffset reflects the default value of 6 while the ealen has been set to reflect the caclulated value given a ratio of 64.
  
 ```python
+from pyswmap import MapCalc
+
 m = pyswmap.MapCalc( rulev6='fd80::/48',
                      rulev4='24.50.100.0/24',
                      #psidoffset=6,
@@ -95,6 +97,21 @@ psidlist = m.port_list()         # Obtain the set of ports for the PSID
 
 Detailed definitions for all the variables discussed in this README
 are available in https://tools.ietf.org/html/draft-ietf-softwire-map.
+
+## Using the MapCalc Class ##
+
+### Initial Steps ###
+We create a new instance of class DmrCalc and supply the DMR
+with the BR prefix:
+
+```python
+from pyswmap import DmrCalc
+
+brprefix = '2001:0db8:85a3::/64'       # The instance's BR prefix
+ipv4addr  = '192.0.0.1'                # An arbitrary IPv4 address to embed
+m = DmrCalc(brprefix)               
+embedded = m.embed_6052addr(ipv4addr)  # An RFC6052 compliant IPv6 address
+```
 
  
 ACKNOWLEDGEMENTS
