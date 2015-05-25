@@ -74,22 +74,27 @@ also be assigned via SLAAC or configured manually.
 - m.mapce: The MAP IPv6 address.  This address
 is used to reach the MAP functions
 of a provisioned/configured MAP CE.
+
+In the example below we assume the PSID has been obtain by issuing the
+gen_psid() method as shown in the preceeding example.
                                  
 ```python
-sharedv4 = '24.50.100.100'
+sharedv4 = '24.50.100.100'       # An address from the IPv4 rule prefix
 m.gen_mapaddr(sharedv4,m.psid)
+print(m.pd)                      # Print the end-user IPv6 prefix
+print(m.mapce)                   # Print the MAP IPv6 address
 ```
-
-Detailed definitions for all the variables discussed in this README
-are available in https://tools.ietf.org/html/draft-ietf-softwire-map.
 
 #### Obtain the List of Ports Assigned to a Particular PSID ####
 This method will return a Python list with a complete list of ports for the instance's psid attribute.
 
 ```python
-m.psid = 4                       # Set the PSID value
+m.psid = 4                       # Set the PSID value (need to write "setter")
 psidlist = m.port_list()         # Obtain the set of ports for the PSID
 ```
+
+Detailed definitions for all the variables discussed in this README
+are available in https://tools.ietf.org/html/draft-ietf-softwire-map.
 
  
 ACKNOWLEDGEMENTS
