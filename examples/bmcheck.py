@@ -27,17 +27,24 @@ m = MapCalc( rulev6='fd80::/48',
 # Extract the port value from the second command line variable.  This can be
 # any TCP/UDP port or ICMP identifier.
 portvalue = int(sys.argv[2])
-m.gen_psid(portvalue)
+
+# Obtain the PSID given a particular port value.
+psid = m.gen_psid(portvalue)
 
 # Extract the originating public IPv4 address from the first command line
 # variable.  This should be an address from the rule IPv4 prefix.
 sharedv4 = sys.argv[1]
-m.gen_mapaddr(sharedv4,m.psid)
+
+# Generate the IPv6 MAP CE address
+mapce = m.get_mapce_addr(sharedv4,psid)
+
+# Generate the IPv6 MAP end-user prefix
+pd = m.get_mapce_prefix(sharedv4,psid)
 
 # Print out some of the pertinent user supplied and calculated values
 print("\n\n")
 print("------------------------------------------------")
-print("PD for this client is: {}".format(m.pd))
-print("MAP CE Address is: {}".format(m.mapce))
+print("PD for this client is: {}".format(pd))
+print("MAP CE Address is: {}".format(mapce))
 print("------------------------------------------------")
 print("\n")

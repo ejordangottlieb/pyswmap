@@ -56,8 +56,8 @@ is defined as the "k bits" in the IETF MAP specification.
 
 #### Given a Layer-4 Port Return the PSID Which Contains it ####
 Supply arbitrary layer-4 port that is valid given PSID Offset to 
-gen_psid method.  This will calculate the following values:
-- m.psid: The port-set ID which defines the
+gen_psid method.  This will return the following value:
+- psid: The port-set ID which defines the
 algorithmically assigned ports unique to
 a particular MAP CE.
 
@@ -67,32 +67,34 @@ psid = m.gen_psid(portvalue)
 ```
 
 #### Determine the Originating IPv6 End-User Prefix and MAP Address ####
-Supply an IPv4 address from IPv4 rule prefix and PSID to gen_mapaddr
-method and use them to calculate the following values:
+Supply an IPv4 address from IPv4 rule prefix and a unique PSID to get_mapce_addr
+and get_mapce_prefix methods and use them to calculate the following values:
 
-- m.pd: The end-user IPv6 prefix. Typically,
-but not exclusively DHCPv6 PD.  Can
-also be assigned via SLAAC or configured manually.
-- m.mapce: The MAP IPv6 address.  This address
+- mapce: The MAP IPv6 address.  This address
 is used to reach the MAP functions
 of a provisioned/configured MAP CE.
+- pd: The end-user IPv6 prefix. Typically,
+but not exclusively DHCPv6 PD.  Can
+also be assigned via SLAAC or configured manually.
 
-In the example below we assume the PSID has been obtain by issuing the
-gen_psid() method as shown in the preceeding example.
+In the example below we supply a valid IPv4 address from the IPv4 rule prefix (sharedv4)
+and a valid PSID value (psid) to allow us to obtain the mapce and pd values:
                                  
 ```python
 sharedv4 = '24.50.100.100'       # An address from the IPv4 rule prefix
-m.gen_mapaddr(sharedv4,m.psid)
-print(m.pd)                      # Print the end-user IPv6 prefix
-print(m.mapce)                   # Print the MAP IPv6 address
+psid = 4                         # A PSID integer value of 4
+mapce = m.get_mapce_addr(sharedv4,psid)
+pd = m.get_mapce_prefix(sharedv4,psid)
+print(mapce)                   # Print the MAP IPv6 address
+print(pd)                      # Print the end-user IPv6 prefix
 ```
 
 #### Obtain the List of Ports Assigned to a Particular PSID ####
 This method will return a Python list with a complete list of ports for the instance's psid attribute.
 
 ```python
-m.psid = 4                       # Set the PSID value (need to write "setter")
-psidlist = m.port_list()         # Obtain the set of ports for the PSID
+psid = 10                        # An example PSID value 
+psidlist = m.port_list(psid)     # Obtain the set of ports for the PSID
 ```
 
 Detailed definitions for all the variables discussed in this README

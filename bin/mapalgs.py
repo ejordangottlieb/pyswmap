@@ -175,13 +175,9 @@ class MapCalc(object):
         if ( portnum < self.start_port() ):
             print("port value is less than allowed by PSID Offset")
             sys.exit(1)
-        self.psid = (portnum & ((2**self.psidbits - 1) << self.portbits)) 
-        self.psid = self.psid >> self.portbits
-        return self.psid
-
-    def port_list(self):
-        # Need to check that valid PSID value exists
-        return self._port_list()
+        psid = (portnum & ((2**self.psidbits - 1) << self.portbits))
+        psid = psid >> self.portbits
+        return psid
 
     def port_ranges(self):
         return 2**self.psidoffset - 1
@@ -190,8 +186,8 @@ class MapCalc(object):
         if self.psidoffset == 0: return 0  
         return 2**(16 - self.psidoffset)
 
-    def _port_list(self):
-        startrange = self.psid * (2**self.portbits) + self.start_port()
+    def port_list(self,psid):
+        startrange = psid * (2**self.portbits) + self.start_port()
         increment = (2**self.psidbits) * (2**self.portbits)
         portlist = [ ]
         for port in range(startrange,startrange + 2**self.portbits):
@@ -215,20 +211,48 @@ class MapCalc(object):
                   ip_network(self.rulev4,strict=False).network_address))
             sys.exit(1)
 
-    def gen_mapaddr(self,ipv4addr,psid):
-        ipv4index = self.ipv4_index(ipv4addr)
+    def _calc_ipv6bit_pos(self):
         addroffset = 128 - (self.rulev6mask + ( self.ealen - self.psidbits))
         psidshift = 128 - ( self.rulev6mask + self.ealen )
-        mapaddr = IPv6Network(self.rulev6,strict=False).network_address
-        mapaddr = int(mapaddr) | ( ipv4index << addroffset )
-        mapaddr = mapaddr | ( psid << psidshift)
-        self.pd = "{}/{}".format(
-                                   IPv6Address(mapaddr),
+        return [addroffset,psidshift]
+
+    def _append_map_eabits(self,ipv4index,addroffset,psidshift,psid):
+        rulev6base = IPv6Network(self.rulev6,strict=False).network_address
+        map_prefix = int(rulev6base) | ( ipv4index << addroffset )
+        map_fullprefix = map_prefix | ( psid << psidshift)
+        return map_fullprefix
+        
+
+    def get_mapce_addr(self,ipv4addr,psid):
+        ipv4index = self.ipv4_index(ipv4addr)
+        (addroffset,psidshift) = self._calc_ipv6bit_pos()
+        map_fullprefix = self._append_map_eabits(ipv4index,
+                                                 addroffset,
+                                                 psidshift,
+                                                 psid)
+        mapv4iid = map_fullprefix | ( int(self.ipv4addr) << 16 )
+        map_full_address = mapv4iid | psid
+        mapce_address = "{}".format(IPv6Address(map_full_address))
+        return mapce_address
+
+    def get_mapce_prefix(self,ipv4addr,psid):
+        ipv4index = self.ipv4_index(ipv4addr)
+        (addroffset,psidshift) = self._calc_ipv6bit_pos()
+        map_fullprefix = self._append_map_eabits(ipv4index,
+                                                 addroffset,
+                                                 psidshift,
+                                                 psid)
+        mapce_prefix = "{}/{}".format(
+                                   IPv6Address(map_fullprefix),
                                    self.rulev6mask + self.ealen
                                 )
-        mapce = mapaddr | ( int(self.ipv4addr) << 16 )
-        mapce = mapce | psid
-        self.mapce = "{}".format(IPv6Address(mapce))
+        return mapce_prefix
+
+    def get_map_ipv4(self,mapce_address):
+        ipv4 = (int(IPv6Address(mapce_address)) & ( 0xffffffff << 16 )) >> 16
+        return ip_address(ipv4)
+            
+
 
 class DmrCalc(object):
 

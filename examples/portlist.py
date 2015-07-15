@@ -19,7 +19,7 @@ m = MapCalc( rulev6='fd80::/48',
 
 # Provide a valid PSID value.  The pyswmap module does not currently validate
 # that the PSID can be represented by the length in bits of the  PSID bits.
-m.psid=int(sys.argv[1])
+psid=int(sys.argv[1])
 
 # Print out the results
-print(m.port_list())
+print(m.port_list(psid))

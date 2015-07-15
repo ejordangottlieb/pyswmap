@@ -53,28 +53,35 @@ m = MapCalc( rulev6='fd80::/48',
              #ealen=14,
                    )
 # Supply arbitrary layer-4 port that is valid given PSID Offset to 
-# gen_psid method.  This will calculate the following values:
-#                  m.psid:       The port-set ID which defines the
+# gen_psid method.  This will return the following value:
+#                  psid:         The port-set ID which defines the
 #                                algorithmically assigned ports unique to
 #                                a particular MAP CE.
 portvalue = 40000
-m.gen_psid(portvalue)
+psid = m.gen_psid(portvalue)
 
-# Supply an IPv4 address from IPv4 rule prefix and PSID to gen_mapaddr
-# method and use them to calculate the following values:
-#                  m.pd:         The end-user IPv6 prefix. Typically,
+
+# A single address from the IPv4 rule prefix
+sharedv4 = '24.50.100.100'
+
+# Supply the IPv4 address from IPv4 rule prefix and PSID to get_mapce_addr
+# method and use them to return:
+#                      
+#                  mapece:       The MAP IPv6 address.  This address
+#                                is used to reach the MAP functions
+#                                of a provisioned/configured MAP CE.
+mapce = m.get_mapce_addr(sharedv4,psid)
+
+# Supply an IPv4 address from IPv4 rule prefix and PSID to get_mapce_prefix
+# method and use them to return:
+#                  pd:           The end-user IPv6 prefix. Typically,
 #                                but not exclusively DHCPv6 PD.  Can
 #                                also be assigned via SLAAC or configured
 #                                manually.  
-#                      
-#                  m.mapce:      The MAP IPv6 address.  This address
-#                                is used to reach the MAP functions
-#                                of a provisioned/configured MAP CE.
-#                                  
-#                                Detailed definitions are available
-#                                in draft-ietf-softwire-map.
-sharedv4 = '24.50.100.100'
-m.gen_mapaddr(sharedv4,m.psid)
+
+pd = m.get_mapce_prefix(sharedv4,psid)
+
+# Detailed definitions are available in draft-ietf-softwire-map.
 
 # Print out some of the pertinent user supplied and calculated values
 print("\n\n")
@@ -94,9 +101,9 @@ print("    Ranges Allocated: {}".format(2**m.psidoffset - 1))
 print("    PSID Bits:        {}".format(m.psidbits))
 print("################################################")
 print("------------------------------------------------")
-print("PSID: {}".format(m.psid))
-print("PD for this client is: {}".format(m.pd))
-print("MAP CE Address is: {}".format(m.mapce))
+print("PSID: {}".format(psid))
+print("PD for this client is: {}".format(pd))
+print("MAP CE Address is: {}".format(mapce))
 print("------------------------------------------------")
 print("Output to follow will include the full range of ports assigned")
 print("to calculated PSID.")
@@ -105,4 +112,4 @@ raw_input = vars(__builtins__).get('raw_input',input)
 raw_input("Press the ENTER/RETURN key to continue")
 print("\n")
 # Print out list of ports for session PSID
-print(m.port_list())
+print(m.port_list(psid))

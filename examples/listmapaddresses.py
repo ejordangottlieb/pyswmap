@@ -22,12 +22,13 @@ m = MapCalc( rulev6='fd80::/48',
 # instance of the ip_address class from module Python ipaddress.
 for y in range(m.rulev4object.num_addresses):
     for w in range(2**m.psidbits):
-        m.gen_mapaddr(m.rulev4object[y],w)
-        #print(m.pd)
-        print("User prefix: {}  MAP address: {}  PSID: {}".format(
-              m.pd,
-              m.mapce,
+        mapce = m.get_mapce_addr(m.rulev4object[y],w)
+        pd = m.get_mapce_prefix(m.rulev4object[y],w)
+        print("User prefix: {}  MAP address: {}  PSID: {} IPv4: {}".format(
+              pd,
+              mapce,
               w,
+              m.get_map_ipv4(mapce),
                                                                  )
              )
 
