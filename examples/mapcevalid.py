@@ -25,8 +25,12 @@ m = MapCalc( rulev6=v6arg,
              #ealen=14,
                    )
 
-test = m.get_map_psid(sys.argv[4])
-print(hex(test))
+print(type(test))
+if (test != None):
+    print(hex(test))
+test2 = m.get_map_ipv4(sys.argv[4])
+if (test2 != None):
+    print(test2)
 #print(m.ealen)
 #print(m.psidbits)
 #print(m.rulev6mask)

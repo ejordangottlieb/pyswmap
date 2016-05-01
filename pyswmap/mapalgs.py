@@ -256,14 +256,51 @@ class MapCalc(object):
         return eabits 
 
     def get_map_ipv4(self,mapce_address):
+        eabits = self.get_ceea_bits(mapce_address)
         ipv4 = (int(IPv6Address(mapce_address)) & ( 0xffffffff << 16 )) >> 16
-        return ip_address(ipv4)
+        address4 = '{}'.format(ip_address(ipv4))
+        if ( self.rulev4mask == 32 ):
+            rule4addr = '{}'.format(self.rulev4object[0])
+            if ( rule4addr != address4 ):
+                return None
+                #print('{} in IID does not match rule IPv4 {}/32'.format(
+                #      address4, rule4addr))
+                #sys.exit(1)
+        else:
+            addrbits = self.ealen - self.psidbits
+            addrmask = 2**addrbits - 1
+            addrindex = ( ( eabits & ( addrmask << self.psidbits ))
+                         >> self.psidbits )
+            rule4addr = '{}'.format(self.rulev4object[addrindex])
+            if ( rule4addr != address4 ):
+                return None
+                #print('{} in IID does not match EA bits IPv4 {}'.format(
+                #      address4, rule4addr))
+                #sys.exit(1)
+            
+        return address4
 
     def get_map_psid(self,mapce_address):
         iid = (int(IPv6Address(mapce_address)) & 0xffff )
         eabits = self.get_ceea_bits(mapce_address)
-        print(eabits)
+        if ( self.psidbits == 0 ):
+            if ( iid != 0):
+                return None
+                #print('Number of PSID bits is 0 while IID contains {}'.format(
+                #      iid))
+                #sys.exit(1)
+        else:
+            psidmask = 2**self.psidbits - 1
+            eapsid = eabits & psidmask
+            if ( iid != eapsid ):
+                return None
+                #print('IID PSID contains {} different from EA {}'.format(
+                #      iid, eapsid))
+                #sys.exit(1)
+            
         return iid
+
+    #def get_mapce_bmr(
             
 
 
