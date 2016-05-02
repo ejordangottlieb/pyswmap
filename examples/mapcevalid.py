@@ -7,7 +7,7 @@ from pyswmap import MapCalc
 # This allows a user to validate that a MAP CE address and source port is
 # valid given a particular mapping rule.  This script ensures that the MAP
 # CE address is valid.  This script does not suport IPv6 user prefix
-# lengths of greater than 64-bits.  I see not reason as it is not adviseable
+# lengths of greater than 64-bits.  I see no reason as it is not advisable
 # to assign a user prefix smaller than a /64.
 
 # Syntax is as follows:
