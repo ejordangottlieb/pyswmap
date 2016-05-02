@@ -298,10 +298,32 @@ class MapCalc(object):
                 #      iid, eapsid))
                 #sys.exit(1)
             
-        return iid
+        return int(iid)
 
-    #def get_mapce_bmr(
-            
+    def get_mapce_bmr(self,mapce_address):
+
+        try:
+            v6addr = IPv6Address(mapce_address)
+        except:
+            return None
+
+        ipv4addr = self.get_map_ipv4(mapce_address)
+        if ( ipv4addr == None):
+            return None
+
+        psidval = self.get_map_psid(mapce_address)
+        if ( psidval == None):
+            return None
+
+        # Check to see if MAP CE Address belongs to the base 64 prefix.
+        # I am not supporting a user prefix with a prefix length > 64
+        v6userprefix = IPv6Network(self.get_mapce_prefix(ipv4addr,psidval))
+        v6base64 = '{}/64'.format(v6userprefix.network_address)
+        if ( v6addr not in IPv6Network(v6base64) ):
+            return None
+        
+         
+        return ( { ipv4addr: psidval } )
 
 
 class DmrCalc(object):

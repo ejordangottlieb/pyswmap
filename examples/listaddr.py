@@ -6,10 +6,12 @@ from pyswmap import MapCalc
 
 # This prints out a list of all possible MAP end-user IPv6 prefixes, 
 # applicable MAP IPv6 addresses, and PSIDs for a particular domain.
-# PSID will always equal 0 for a sharing ratio of 1:1.
+# PSID will always equal 0 for a sharing ratio of 1:1.  This script is 
+# allows the entering in of the mapping rule via the command line but is 
+# otherwise the same as listmapaddresses.py.
 
 # Syntax is as follows:
-#  ./listmapaddresses.py 
+#  ./listaddr.py [Rule IPv6] [Rule IPv4] [ratio]
 
 # Define MAP domain characteristics.  The values may be changed to suite
 # a alternate MAP domain configurations.
